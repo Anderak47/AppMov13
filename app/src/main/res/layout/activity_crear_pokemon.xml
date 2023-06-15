@@ -21,7 +21,23 @@
             android:id="@+id/ediTipo"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Comentario"
+            android:hint="Descripción"
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <EditText
+            android:id="@+id/textLatitud"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="Latitud"
+            android:textSize="16sp"
+            android:padding="8dp"/>
+
+        <EditText
+            android:id="@+id/textLongitud"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:hint="longitud"
             android:textSize="16sp"
             android:padding="8dp"/>
 
@@ -48,6 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Galeria" />
+
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -15,11 +15,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.practica.DetallePokemonActivity;
+import com.example.practica.Entitis.Coordenadas;
 import com.example.practica.Entitis.Pokemon;
+import com.example.practica.MapsActivity;
 import com.example.practica.R;
+import com.example.practica.Service.PokemonService;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NameAdapter  extends RecyclerView.Adapter{
     private List<Pokemon> items;
@@ -72,6 +81,50 @@ public class NameAdapter  extends RecyclerView.Adapter{
                     // Iniciar la actividad
                     context.startActivity(intent);
                 }
+            }
+        });
+
+        Button btnVerUbicacion = view.findViewById(R.id.btnVerUbicacion);
+        btnVerUbicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int clickedPosition = holder.getAdapterPosition();
+                Pokemon clickedItem = items.get(clickedPosition);
+
+                // Crea una instancia de Retrofit y la interfaz del servicio
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl("https://647788dc9233e82dd53bd0e9.mockapi.io/") // Reemplaza con la URL de tu API
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+                PokemonService Service = retrofit.create(PokemonService.class);
+
+                // Realiza la solicitud para obtener los datos de latitud y longitud
+                Call<Coordenadas> call = Service.getCoordenadas(clickedItem.getId());
+                call.enqueue(new Callback<Coordenadas>() {
+                    @Override
+                    public void onResponse(Call<Coordenadas> call, Response<Coordenadas> response) {
+                        if (response.isSuccessful()) {
+                            Coordenadas cordenadas = response.body();
+                            if (cordenadas != null) {
+                                double latitude = cordenadas.getLatitud();
+                                double longitude = cordenadas.getLongitud();
+                                // Realiza la redirección a MapsActivity y pasa los datos de latitud y longitud
+                                // Realiza la redirección a MapsActivity y pasa los datos de latitud y longitud
+                                Intent intent = new Intent(holder.itemView.getContext(), MapsActivity.class);
+                                intent.putExtra("latitud", latitude);
+                                intent.putExtra("longitud", longitude);
+                                holder.itemView.getContext().startActivity(intent);
+                            }
+                        } else {
+                            // Maneja el caso de respuesta no exitosa de la API
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Coordenadas> call, Throwable t) {
+                        // Maneja el caso de error de la solicitud a la API
+                    }
+                });
             }
         });
         

@@ -1,26 +1,39 @@
 package com.example.practica;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.renderscript.Sampler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.practica.Entitis.Pokemon;
 import com.example.practica.R;
 import com.example.practica.Service.PokemonService;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
 
@@ -30,11 +43,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CrearPokemonActivity extends AppCompatActivity {
+public class CrearPokemonActivity extends AppCompatActivity implements LocationListener{
+    private LocationManager mLocationManager;
     private static final int OPEN_GALLERY_REQUEST = 1002;
     private static final int REQUEST_CAMERA = 1;
     String urlImage = "";
-
+    private GoogleMap mMap;
+    public Double latitude;
+    public Double longitude;
     Pokemon pokemon = new Pokemon();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +61,31 @@ public class CrearPokemonActivity extends AppCompatActivity {
         EditText ediTipo = findViewById(R.id.ediTipo);
         Button crear = findViewById(R.id.btnCrear);
 
+         //sacar cordenadas
+        // Solicita los permisos de ubicación si no están concedidos
+        if(
+                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED ||
+                        checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_DENIED) {
+            String[] permissions = new String[] {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            };
+            requestPermissions(permissions, 3000);
+
+        }
+        else {
+            // configurar frecuencia de actualización de GPS
+            mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 1, this);
+            Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            Log.i("MAIN_APP: Location - ",  "Latitude: " + location.getLatitude());
+            //Log.i("MAIN_APP: Location - ",  "Latitude: " + location.getLongitude());
+        }
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //---sacar coordenadas
+
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://647788dc9233e82dd53bd0e9.mockapi.io/")
                         .addConverterFactory(GsonConverterFactory.create())
@@ -58,6 +96,9 @@ public class CrearPokemonActivity extends AppCompatActivity {
                 pokemon.tipo = String.valueOf(ediTipo.getText());
                 String url = "https://demo-upn.bit2bittest.com/" + urlImage;
                 pokemon.foto = url;
+                pokemon.setLatitud(latitude);
+                pokemon.setLongitud(longitude);
+
                 // Llamar al servicio para guardar el nuevo usuario
 
                 Call<Pokemon> call = service.create(pokemon);
@@ -230,5 +271,18 @@ public class CrearPokemonActivity extends AppCompatActivity {
             return imagePath;
         }
         return null;
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+         latitude = location.getLatitude();
+         longitude = location.getLongitude();
+        //mandar cordenadas actuales
+        Log.i("MAIN_APP: Location AND",  "Latitude: " + latitude);
+        Log.i("MAIN_APP: Location AND",  "Longitude: " + longitude);
+        TextView latitud = findViewById(R.id.textLatitud);
+        TextView longitud = findViewById(R.id.textLongitud);
+        latitud.setText(String.valueOf(latitude));
+        longitud.setText(String.valueOf(longitude));
     }
 }

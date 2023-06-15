@@ -5,11 +5,15 @@ public class Pokemon {
     public String nombre ;
     public String tipo;
     public String foto;
+    public Double latitud;
+    public Double longitud;
 
-    public Pokemon(String nombre, String tipo, String foto) {
+    public Pokemon(String nombre, String tipo, String foto, Double latitud, Double longitud) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.foto = foto;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
 
     public Pokemon(String nombre, String tipo) {
@@ -20,6 +24,7 @@ public class Pokemon {
     public Pokemon() {
 
     }
+
     public int getId() {
         return id;
     }
@@ -50,5 +55,21 @@ public class Pokemon {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
     }
 }

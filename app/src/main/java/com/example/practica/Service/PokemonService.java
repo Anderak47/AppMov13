@@ -1,5 +1,6 @@
 package com.example.practica.Service;
 
+import com.example.practica.Entitis.Coordenadas;
 import com.example.practica.Entitis.Pokemon;
 import com.google.gson.annotations.SerializedName;
 
@@ -32,6 +33,10 @@ public interface PokemonService {
 
     @POST("image")
     Call<ImageResponse> saveImage(@Body ImageToSave image);
+
+    //para coordenadas
+    @GET("pokemon/{id}")
+    Call<Coordenadas> getCoordenadas (@Path("id") int id);
 
     class ImageResponse {
         @SerializedName("url")
