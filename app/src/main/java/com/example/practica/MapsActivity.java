@@ -28,6 +28,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager mLocationManager;
     public double latitud;
     public double longitud;
+    public String nombrePisaje;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (intent != null){
             latitud = intent.getDoubleExtra("latitud",0.8);
             longitud = intent.getDoubleExtra("longitud",0.5);
+            nombrePisaje = intent.getStringExtra("name");
             Log.i("MAIN_APP: Location - ", "Latitude: " + longitud);
             Log.i("MAIN_APP: Location - ", "Longitude: " + latitud);
         }
@@ -66,7 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng coordenadas = new LatLng(latitud, longitud);
-        mMap.addMarker(new MarkerOptions().position(coordenadas).title(""));
+        mMap.addMarker(new MarkerOptions().position(coordenadas).title(nombrePisaje));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(coordenadas, 8f));
 
     }

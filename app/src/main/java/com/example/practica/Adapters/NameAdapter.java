@@ -108,9 +108,11 @@ public class NameAdapter  extends RecyclerView.Adapter{
                             if (cordenadas != null) {
                                 double latitude = cordenadas.getLatitud();
                                 double longitude = cordenadas.getLongitud();
+                                String name = item.nombre;
                                 // Realiza la redirección a MapsActivity y pasa los datos de latitud y longitud
                                 // Realiza la redirección a MapsActivity y pasa los datos de latitud y longitud
                                 Intent intent = new Intent(holder.itemView.getContext(), MapsActivity.class);
+                                intent.putExtra("name", name);
                                 intent.putExtra("latitud", latitude);
                                 intent.putExtra("longitud", longitude);
                                 holder.itemView.getContext().startActivity(intent);
