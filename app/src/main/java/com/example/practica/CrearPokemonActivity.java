@@ -2,6 +2,7 @@ package com.example.practica;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
@@ -43,7 +44,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CrearPokemonActivity extends AppCompatActivity implements LocationListener{
+public class CrearPokemonActivity extends AppCompatActivity implements LocationListener {
     private LocationManager mLocationManager;
     private static final int OPEN_GALLERY_REQUEST = 1002;
     private static final int REQUEST_CAMERA = 1;
@@ -52,6 +53,7 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
     public Double latitude;
     public Double longitude;
     Pokemon pokemon = new Pokemon();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,8 +62,7 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
         EditText ediname = findViewById(R.id.ediNombre);
         EditText ediTipo = findViewById(R.id.ediTipo);
         Button crear = findViewById(R.id.btnCrear);
-
-         //sacar cordenadas
+        //sacar cordenadas
         // Solicita los permisos de ubicación si no están concedidos
         if(
                 checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED ||
@@ -74,13 +75,19 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
 
         }
         else {
-            // configurar frecuencia de actualización de GPS
+            // configurar frecuencia de actualización de GPS GPSPROMIDER Y NETWORK
             mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 1, this);
             Location location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            Log.i("MAIN_APP: Location - ",  "Latitude: " + location.getLatitude());
-            //Log.i("MAIN_APP: Location - ",  "Latitude: " + location.getLongitude());
+            //Log.i("MAIN_APP: Location - ",  "Latitude: " + location.getLatitude());
+            if(location != null){
+                Log.i("MAIN_APP: Location - ",  "Latitude: " + location.getLatitude());
+            }
+            else {
+                Log.i("MAIN_APP: Location - ",  "Location is null");
+            }
         }
+
         crear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,19 +109,24 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
                 // Llamar al servicio para guardar el nuevo usuario
 
                 Call<Pokemon> call = service.create(pokemon);
+
+                Log.i("CREAR BOTON ENTRO", "ENTRO");
                 call.enqueue(new Callback<Pokemon>() {
                     @Override
                     public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
                         if (response.isSuccessful()) {
 
-
+                            Log.i("MAIN::response.isSuccessful()", "EXITOSO");
                         } else {
                             // Manejar el error en caso de que no se haya podido guardar el usuario
+                            Log.i("MAIN::error", "else");
                         }
                     }
+
                     @Override
                     public void onFailure(Call<Pokemon> call, Throwable t) {
                         // Manejar el error de la llamada al servicio
+                        Log.i("MAIN::error llamada al servicio", "onFailure");
                     }
                 });
                 Toast.makeText(getApplicationContext(), "Pokemon Guardado", Toast.LENGTH_SHORT).show();
@@ -136,19 +148,18 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
         fotoGaleria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     openGallery();
-                }
-                else {
-                    String[] permissions = new String[] {Manifest.permission.READ_EXTERNAL_STORAGE};
+                } else {
+                    String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
                     requestPermissions(permissions, 2000);
                 }
             }
         });
     }
+
     private void handleOpenCamera() {
-        if(checkSelfPermission(android.Manifest.permission.CAMERA)  == PackageManager.PERMISSION_GRANTED)
-        {
+        if (checkSelfPermission(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             // abrir camara
             Log.i("MAIN_APP", "Tiene permisos para abrir la camara");
             abrirCamara();
@@ -159,10 +170,12 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
             handleOpenCamera();
         }
     }
+
     private void abrirCamara() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(intent, REQUEST_CAMERA);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -202,7 +215,7 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
             });
         }
         //galeria
-        if(requestCode == OPEN_GALLERY_REQUEST && resultCode == RESULT_OK && data !=null){
+        if (requestCode == OPEN_GALLERY_REQUEST && resultCode == RESULT_OK && data != null) {
             Uri selectedImageUri = data.getData();
 
             // Obtener la ruta del archivo de imagen a partir de la URI
@@ -250,17 +263,20 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
         }
 
     }
+
     private String convertBitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, OPEN_GALLERY_REQUEST);
     }
+
     private String getPathFromUri(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -275,14 +291,32 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-         latitude = location.getLatitude();
-         longitude = location.getLongitude();
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
         //mandar cordenadas actuales
-        Log.i("MAIN_APP: Location AND",  "Latitude: " + latitude);
-        Log.i("MAIN_APP: Location AND",  "Longitude: " + longitude);
+        Log.i("MAIN_APP: Location AND", "Latitude: " + latitude);
+        Log.i("MAIN_APP: Location AND", "Longitude: " + longitude);
         TextView latitud = findViewById(R.id.textLatitud);
         TextView longitud = findViewById(R.id.textLongitud);
         latitud.setText(String.valueOf(latitude));
         longitud.setText(String.valueOf(longitude));
+        //cerrar servicio
+        mLocationManager.removeUpdates(this);
+
+    }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        // Handle location provider status changes
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+        // Handle when a location provider is enabled
+        Log.d("MAIN_APP", "onProviderEnabled: " + provider);
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Log.d("MAIN_APP", "onProviderDisabled: " + provider);
     }
 }
