@@ -1,7 +1,7 @@
 package com.example.practica.Service;
 
 import com.example.practica.Entitis.Coordenadas;
-import com.example.practica.Entitis.Pokemon;
+import com.example.practica.Entitis.Paisaje;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -14,19 +14,19 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
-public interface PokemonService {
+public interface PaisajeService {
     @GET("pokemon")
-    Call<List<Pokemon>> getAllUser();
+    Call<List<Paisaje>> getAllUser();
 
     // /users/1
     @GET("pokemon/{id}")
-    Call<Pokemon> findUser(@Path("id") int id);
+    Call<Paisaje> findUser(@Path("id") int id);
     // users
     @POST("pokemon")
-    Call<Pokemon> create(@Body Pokemon pokemon);
+    Call<Paisaje> create(@Body Paisaje paisaje);
 
     @PUT("pokemon/{id}")
-    Call<Pokemon> update(@Path("id") int id, @Body Pokemon pokemon);
+    Call<Paisaje> update(@Path("id") int id, @Body Paisaje paisaje);
 
     @DELETE("pokemon/{id}")
     Call<Void> delete(@Path("id") int id);

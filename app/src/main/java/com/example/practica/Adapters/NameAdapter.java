@@ -1,25 +1,22 @@
 package com.example.practica.Adapters;
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.practica.DetallePokemonActivity;
+import com.example.practica.DetallePaisajeActivity;
 import com.example.practica.Entitis.Coordenadas;
-import com.example.practica.Entitis.Pokemon;
+import com.example.practica.Entitis.Paisaje;
 import com.example.practica.MapsActivity;
 import com.example.practica.R;
-import com.example.practica.Service.PokemonService;
+import com.example.practica.Service.PaisajeService;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -31,8 +28,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NameAdapter  extends RecyclerView.Adapter{
-    private List<Pokemon> items;
-    public NameAdapter(List<Pokemon> items){this.items = items;}
+    private List<Paisaje> items;
+    public NameAdapter(List<Paisaje> items){this.items = items;}
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,7 +41,7 @@ public class NameAdapter  extends RecyclerView.Adapter{
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-       Pokemon item = items.get(position);
+       Paisaje item = items.get(position);
        View view = holder.itemView;
 
        TextView ediNombre = view.findViewById(R.id.editNombre);
@@ -61,7 +58,7 @@ public class NameAdapter  extends RecyclerView.Adapter{
             public void onClick(View v) {
                 int adapterPosition = holder.getAdapterPosition();
                 if (adapterPosition != RecyclerView.NO_POSITION) {
-                    Pokemon item = items.get(adapterPosition);
+                    Paisaje item = items.get(adapterPosition);
                     String name = item.nombre;
                     String tipo = item.tipo;
                     String foto = item.foto;
@@ -70,7 +67,7 @@ public class NameAdapter  extends RecyclerView.Adapter{
                     Context context = v.getContext();
 
                     // Crear un Intent para iniciar la nueva actividad
-                    Intent intent = new Intent(context, DetallePokemonActivity.class);
+                    Intent intent = new Intent(context, DetallePaisajeActivity.class);
                     intent.putExtra("id", id); // Agregar el ID a los extras
                     // Pasar los datos a través de los extras del Intent
                     intent.putExtra("name", name);
@@ -89,14 +86,14 @@ public class NameAdapter  extends RecyclerView.Adapter{
             @Override
             public void onClick(View v) {
                 int clickedPosition = holder.getAdapterPosition();
-                Pokemon clickedItem = items.get(clickedPosition);
+                Paisaje clickedItem = items.get(clickedPosition);
 
                 // Crea una instancia de Retrofit y la interfaz del servicio
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://647788dc9233e82dd53bd0e9.mockapi.io/") // Reemplaza con la URL de tu API
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                PokemonService Service = retrofit.create(PokemonService.class);
+                PaisajeService Service = retrofit.create(PaisajeService.class);
 
                 // Realiza la solicitud para obtener los datos de latitud y longitud
                 Call<Coordenadas> call = Service.getCoordenadas(clickedItem.getId());

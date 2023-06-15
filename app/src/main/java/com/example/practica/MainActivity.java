@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
         Button btnCrear = findViewById(R.id.btnCrear);
         btnCrear.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), CrearPokemonActivity.class);
+            Intent intent = new Intent(getApplicationContext(), CrearPaisajeActivity.class);
             startActivity(intent);
 
         });

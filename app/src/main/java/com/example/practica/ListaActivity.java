@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.practica.Adapters.NameAdapter;
-import com.example.practica.Entitis.Pokemon;
-import com.example.practica.Service.PokemonService;
+import com.example.practica.Entitis.Paisaje;
+import com.example.practica.Service.PaisajeService;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -43,14 +43,14 @@ public class ListaActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        PokemonService service = retrofit.create(PokemonService.class);
-        Call<List<Pokemon>> call = service.getAllUser();
-        call.enqueue(new Callback<List<Pokemon>>() {
+        PaisajeService service = retrofit.create(PaisajeService.class);
+        Call<List<Paisaje>> call = service.getAllUser();
+        call.enqueue(new Callback<List<Paisaje>>() {
             @Override
-            public void onResponse(Call<List<Pokemon>> call, Response<List<Pokemon>> response) {
+            public void onResponse(Call<List<Paisaje>> call, Response<List<Paisaje>> response) {
                 Log.i("MAIN_APP", String.valueOf(response.code()));
                 if (response.isSuccessful()) {
-                    List<Pokemon> data = response.body();
+                    List<Paisaje> data = response.body();
                     Log.i("MAIN_APP", new Gson().toJson(data));
                     NameAdapter adapter = new NameAdapter(data);
                     rvLista.setAdapter(adapter);
@@ -58,7 +58,7 @@ public class ListaActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<List<Pokemon>> call, Throwable t) {
+            public void onFailure(Call<List<Paisaje>> call, Throwable t) {
                 // Manejar el error en caso de fallo en la solicitud
             }
         });

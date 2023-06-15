@@ -49,10 +49,10 @@
         </activity>
 
         <activity
-            android:name=".DetallePokemonActivity"
+            android:name=".DetallePaisajeActivity"
             android:exported="false" />
         <activity
-            android:name=".CrearPokemonActivity"
+            android:name=".CrearPaisajeActivity"
             android:exported="false" />
         <activity
             android:name=".ListaActivity"

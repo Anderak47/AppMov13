@@ -13,12 +13,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Crear Publicacion" />
+        android:text="Crear Paisaje" />
 
     <Button
         android:id="@+id/btnListaPokemon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Mis Publicaciones" />
+        android:text="Mis Paisajes" />
 </LinearLayout>

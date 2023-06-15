@@ -1,6 +1,6 @@
 package com.example.practica.Entitis;
 
-public class Pokemon {
+public class Paisaje {
     public int id;
     public String nombre ;
     public String tipo;
@@ -8,7 +8,7 @@ public class Pokemon {
     public Double latitud;
     public Double longitud;
 
-    public Pokemon(String nombre, String tipo, String foto, Double latitud, Double longitud) {
+    public Paisaje(String nombre, String tipo, String foto, Double latitud, Double longitud) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.foto = foto;
@@ -16,12 +16,12 @@ public class Pokemon {
         this.longitud = longitud;
     }
 
-    public Pokemon(String nombre, String tipo) {
+    public Paisaje(String nombre, String tipo) {
         this.nombre = nombre;
         this.tipo = tipo;
     }
 
-    public Pokemon() {
+    public Paisaje() {
 
     }
 

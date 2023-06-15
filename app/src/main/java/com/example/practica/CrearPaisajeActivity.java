@@ -2,7 +2,6 @@ package com.example.practica;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Context;
@@ -17,7 +16,6 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.renderscript.Sampler;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -26,15 +24,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.practica.Entitis.Pokemon;
-import com.example.practica.R;
-import com.example.practica.Service.PokemonService;
+import com.example.practica.Entitis.Paisaje;
+import com.example.practica.Service.PaisajeService;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.ByteArrayOutputStream;
 
@@ -44,7 +37,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CrearPokemonActivity extends AppCompatActivity implements LocationListener {
+public class CrearPaisajeActivity extends AppCompatActivity implements LocationListener {
     private LocationManager mLocationManager;
     private static final int OPEN_GALLERY_REQUEST = 1002;
     private static final int REQUEST_CAMERA = 1;
@@ -52,7 +45,7 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
     private GoogleMap mMap;
     public Double latitude;
     public Double longitude;
-    Pokemon pokemon = new Pokemon();
+    Paisaje paisaje = new Paisaje();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,23 +90,23 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
                         .baseUrl("https://647788dc9233e82dd53bd0e9.mockapi.io/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                PokemonService service = retrofit.create(PokemonService.class);
+                PaisajeService service = retrofit.create(PaisajeService.class);
 
-                pokemon.nombre = String.valueOf(ediname.getText());
-                pokemon.tipo = String.valueOf(ediTipo.getText());
+                paisaje.nombre = String.valueOf(ediname.getText());
+                paisaje.tipo = String.valueOf(ediTipo.getText());
                 String url = "https://demo-upn.bit2bittest.com/" + urlImage;
-                pokemon.foto = url;
-                pokemon.setLatitud(latitude);
-                pokemon.setLongitud(longitude);
+                paisaje.foto = url;
+                paisaje.setLatitud(latitude);
+                paisaje.setLongitud(longitude);
 
                 // Llamar al servicio para guardar el nuevo usuario
 
-                Call<Pokemon> call = service.create(pokemon);
+                Call<Paisaje> call = service.create(paisaje);
 
                 Log.i("CREAR BOTON ENTRO", "ENTRO");
-                call.enqueue(new Callback<Pokemon>() {
+                call.enqueue(new Callback<Paisaje>() {
                     @Override
-                    public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
+                    public void onResponse(Call<Paisaje> call, Response<Paisaje> response) {
                         if (response.isSuccessful()) {
 
                             Log.i("MAIN::response.isSuccessful()", "EXITOSO");
@@ -124,7 +117,7 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
                     }
 
                     @Override
-                    public void onFailure(Call<Pokemon> call, Throwable t) {
+                    public void onFailure(Call<Paisaje> call, Throwable t) {
                         // Manejar el error de la llamada al servicio
                         Log.i("MAIN::error llamada al servicio", "onFailure");
                     }
@@ -193,13 +186,13 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
-            PokemonService services = retrofit.create(PokemonService.class);
-            Call<PokemonService.ImageResponse> call = services.saveImage(new PokemonService.ImageToSave(base64Image));
-            call.enqueue(new Callback<PokemonService.ImageResponse>() {
+            PaisajeService services = retrofit.create(PaisajeService.class);
+            Call<PaisajeService.ImageResponse> call = services.saveImage(new PaisajeService.ImageToSave(base64Image));
+            call.enqueue(new Callback<PaisajeService.ImageResponse>() {
                 @Override
-                public void onResponse(Call<PokemonService.ImageResponse> call, Response<PokemonService.ImageResponse> response) {
+                public void onResponse(Call<PaisajeService.ImageResponse> call, Response<PaisajeService.ImageResponse> response) {
                     if (response.isSuccessful()) {
-                        PokemonService.ImageResponse imageResponse = response.body();
+                        PaisajeService.ImageResponse imageResponse = response.body();
                         urlImage = imageResponse.getUrl();
                         Log.e("APPURL", urlImage);
                     } else {
@@ -208,7 +201,7 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
                 }
 
                 @Override
-                public void onFailure(Call<PokemonService.ImageResponse> call, Throwable t) {
+                public void onFailure(Call<PaisajeService.ImageResponse> call, Throwable t) {
                     // Error de red o de la API
                     Log.i("Respuesta inactiva", "");
                 }
@@ -233,19 +226,19 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
-                    PokemonService services = retrofit.create(PokemonService.class);
-                    Call<PokemonService.ImageResponse> call = services.saveImage(new PokemonService.ImageToSave(base64Image));
-                    call.enqueue(new Callback<PokemonService.ImageResponse>() {
+                    PaisajeService services = retrofit.create(PaisajeService.class);
+                    Call<PaisajeService.ImageResponse> call = services.saveImage(new PaisajeService.ImageToSave(base64Image));
+                    call.enqueue(new Callback<PaisajeService.ImageResponse>() {
                         @Override
-                        public void onResponse(Call<PokemonService.ImageResponse> call, Response<PokemonService.ImageResponse> response) {
+                        public void onResponse(Call<PaisajeService.ImageResponse> call, Response<PaisajeService.ImageResponse> response) {
                             if (response.isSuccessful()) {
-                                PokemonService.ImageResponse imageResponse = response.body();
+                                PaisajeService.ImageResponse imageResponse = response.body();
                                 urlImage = imageResponse.getUrl();
                                 Log.e("NewImageUrl", urlImage);
 
                                 // Después de obtener la nueva URL, puedes continuar con el proceso de guardar el usuario en el mock API
                                 // Aquí puedes llamar al servicio mock API y enviar la nueva URL como parte de los datos del usuario
-                                pokemon.foto = urlImage;
+                                paisaje.foto = urlImage;
                                 // Resto del código para guardar el usuario en el mock API
                             } else {
                                 Log.e("Error cargar imagen", response.toString());
@@ -253,7 +246,7 @@ public class CrearPokemonActivity extends AppCompatActivity implements LocationL
                         }
 
                         @Override
-                        public void onFailure(Call<PokemonService.ImageResponse> call, Throwable t) {
+                        public void onFailure(Call<PaisajeService.ImageResponse> call, Throwable t) {
                             // Error de red o de la API
                             Log.e("API Failure", t.getMessage());
                         }

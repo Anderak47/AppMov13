@@ -1,23 +1,17 @@
 package com.example.practica;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.practica.Adapters.NameAdapter;
-import com.example.practica.Entitis.Pokemon;
-import com.example.practica.Service.PokemonService;
-import com.google.gson.Gson;
+import com.example.practica.Entitis.Paisaje;
+import com.example.practica.Service.PaisajeService;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -28,9 +22,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DetallePokemonActivity extends AppCompatActivity {
+public class DetallePaisajeActivity extends AppCompatActivity {
     private int id;
-    Pokemon pokemon = new Pokemon();
+    Paisaje paisaje = new Paisaje();
     RecyclerView rvLista;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +53,7 @@ public class DetallePokemonActivity extends AppCompatActivity {
                         .baseUrl("https://647788dc9233e82dd53bd0e9.mockapi.io/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                PokemonService userService = retrofit.create(PokemonService.class);
+                PaisajeService userService = retrofit.create(PaisajeService.class);
 
                 Call<Void> call = userService.delete(id);
 
@@ -71,12 +65,12 @@ public class DetallePokemonActivity extends AppCompatActivity {
                             // Realiza cualquier acción adicional o actualización de la interfaz aquí
 
                             // Actualiza la lista de usuarios llamando a getAllUser() nuevamente
-                            Call<List<Pokemon>> userListCall = userService.getAllUser();
-                            userListCall.enqueue(new Callback<List<Pokemon>>() {
+                            Call<List<Paisaje>> userListCall = userService.getAllUser();
+                            userListCall.enqueue(new Callback<List<Paisaje>>() {
                                 @Override
-                                public void onResponse(Call<List<Pokemon>> call, Response<List<Pokemon>> response) {
+                                public void onResponse(Call<List<Paisaje>> call, Response<List<Paisaje>> response) {
                                     if (response.isSuccessful()) {
-                                        List<Pokemon> userList = response.body();
+                                        List<Paisaje> userList = response.body();
                                         // Actualiza tu RecyclerView o cualquier otra vista con la lista actualizada
 
                                     } else {
@@ -86,7 +80,7 @@ public class DetallePokemonActivity extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onFailure(Call<List<Pokemon>> call, Throwable t) {
+                                public void onFailure(Call<List<Paisaje>> call, Throwable t) {
                                     // Error en la solicitud
                                     // Maneja el error de acuerdo a tus necesidades
                                 }
@@ -116,25 +110,25 @@ public class DetallePokemonActivity extends AppCompatActivity {
                 String comentario = tvTipo.getText().toString();
 
 
-                Pokemon updatedUser = new Pokemon(descripcion, comentario);
+                Paisaje updatedUser = new Paisaje(descripcion, comentario);
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl("https://647788dc9233e82dd53bd0e9.mockapi.io/")
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
-                PokemonService userService = retrofit.create(PokemonService.class);
-                Call<Pokemon> call = userService.update(id, updatedUser);
-                call.enqueue(new Callback<Pokemon>() {
+                PaisajeService userService = retrofit.create(PaisajeService.class);
+                Call<Paisaje> call = userService.update(id, updatedUser);
+                call.enqueue(new Callback<Paisaje>() {
                     @Override
-                    public void onResponse(Call<Pokemon> call, Response<Pokemon> response) {
+                    public void onResponse(Call<Paisaje> call, Response<Paisaje> response) {
                         if (response.isSuccessful()) {
                             // Actualización exitosa
-                            Pokemon updatedUser = response.body();
-                            Call<List<Pokemon>> userListCall = userService.getAllUser();
-                            userListCall.enqueue(new Callback<List<Pokemon>>() {
+                            Paisaje updatedUser = response.body();
+                            Call<List<Paisaje>> userListCall = userService.getAllUser();
+                            userListCall.enqueue(new Callback<List<Paisaje>>() {
                                 @Override
-                                public void onResponse(Call<List<Pokemon>> call, Response<List<Pokemon>> response) {
+                                public void onResponse(Call<List<Paisaje>> call, Response<List<Paisaje>> response) {
                                     if (response.isSuccessful()) {
-                                        List<Pokemon> userList = response.body();
+                                        List<Paisaje> userList = response.body();
                                         // Actualiza tu RecyclerView o cualquier otra vista con la lista actualizada
 
                                     } else {
@@ -144,7 +138,7 @@ public class DetallePokemonActivity extends AppCompatActivity {
                                 }
 
                                 @Override
-                                public void onFailure(Call<List<Pokemon>> call, Throwable t) {
+                                public void onFailure(Call<List<Paisaje>> call, Throwable t) {
                                     // Error en la solicitud
                                     // Maneja el error de acuerdo a tus necesidades
                                 }
@@ -160,7 +154,7 @@ public class DetallePokemonActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<Pokemon> call, Throwable t) {
+                    public void onFailure(Call<Paisaje> call, Throwable t) {
                         // Error en la solicitud
                         // Maneja el error de acuerdo a tus necesidades
                         //Toast.makeText(ContactoActivity.this, "Error de conexión", Toast.LENGTH_SHORT).show();
