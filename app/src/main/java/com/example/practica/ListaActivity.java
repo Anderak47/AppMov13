@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.example.practica.Adapters.NameAdapter;
+import com.example.practica.Adapters.PaisajeAdapter;
 import com.example.practica.Entitis.Paisaje;
 import com.example.practica.Service.PaisajeService;
 import com.google.gson.Gson;
@@ -52,7 +52,7 @@ public class ListaActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     List<Paisaje> data = response.body();
                     Log.i("MAIN_APP", new Gson().toJson(data));
-                    NameAdapter adapter = new NameAdapter(data);
+                    PaisajeAdapter adapter = new PaisajeAdapter(data);
                     rvLista.setAdapter(adapter);
                 }
             }

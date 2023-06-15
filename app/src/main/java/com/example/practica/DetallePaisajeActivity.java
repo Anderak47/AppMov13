@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.practica.Entitis.Paisaje;
 import com.example.practica.Service.PaisajeService;
@@ -29,7 +30,7 @@ public class DetallePaisajeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle_pokemon);
+        setContentView(R.layout.activity_detalle_paisaje);
 
         Intent intent = getIntent();
         id = intent.getIntExtra("id", -1);
@@ -37,12 +38,12 @@ public class DetallePaisajeActivity extends AppCompatActivity {
         String tipo = intent.getStringExtra("tipo");
         String foto = intent.getStringExtra("foto");
 
-        EditText tvName = findViewById(R.id.ediDetallePoke);
+        TextView tvName = findViewById(R.id.ediDetallePoke);
         EditText tvTipo = findViewById(R.id.ediDestalleTipo);
         ImageView tvFoto = findViewById(R.id.detalleImgFoto);
 
         tvName.setText(nombre);
-        tvTipo.setText(tipo);
+        //tvTipo.setText(tipo);
         Picasso.get().load(foto).into(tvFoto);
 
         Button btnEliminar = findViewById(R.id.btnEliminar);

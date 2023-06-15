@@ -27,9 +27,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class NameAdapter  extends RecyclerView.Adapter{
+public class PaisajeAdapter extends RecyclerView.Adapter{
     private List<Paisaje> items;
-    public NameAdapter(List<Paisaje> items){this.items = items;}
+    public PaisajeAdapter(List<Paisaje> items){this.items = items;}
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,11 +45,11 @@ public class NameAdapter  extends RecyclerView.Adapter{
        View view = holder.itemView;
 
        TextView ediNombre = view.findViewById(R.id.editNombre);
-       TextView ediTipo = view.findViewById(R.id.editTipo);
+       //TextView ediTipo = view.findViewById(R.id.editTipo);
        ImageView imgFoto = view.findViewById(R.id.imgFoto);
 
         ediNombre.setText(item.nombre);
-        ediTipo.setText(item.tipo);
+        //ediTipo.setText(item.tipo);
         Picasso.get().load(item.getFoto()).into(imgFoto);
 
         Button btnLlevar = view.findViewById(R.id.btnLlevarInfo);
@@ -60,7 +60,7 @@ public class NameAdapter  extends RecyclerView.Adapter{
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     Paisaje item = items.get(adapterPosition);
                     String name = item.nombre;
-                    String tipo = item.tipo;
+                    //String tipo = item.tipo;
                     String foto = item.foto;
                     int id = item.id;
                     // Obtener el contexto a través de la vista
@@ -71,7 +71,7 @@ public class NameAdapter  extends RecyclerView.Adapter{
                     intent.putExtra("id", id); // Agregar el ID a los extras
                     // Pasar los datos a través de los extras del Intent
                     intent.putExtra("name", name);
-                    intent.putExtra("tipo", tipo);
+                    //intent.putExtra("tipo", tipo);
                     intent.putExtra("foto", foto);
                     //intent.putExtra("avatar", imageUrl);
 
@@ -80,11 +80,11 @@ public class NameAdapter  extends RecyclerView.Adapter{
                 }
             }
         });
-
-        Button btnVerUbicacion = view.findViewById(R.id.btnVerUbicacion);
-        btnVerUbicacion.setOnClickListener(new View.OnClickListener() {
+        Button btVerUbicacion = view.findViewById(R.id.btnVerUbicacion);
+        btVerUbicacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int adapterPosition = holder.getAdapterPosition();
                 int clickedPosition = holder.getAdapterPosition();
                 Paisaje clickedItem = items.get(clickedPosition);
 
@@ -126,7 +126,13 @@ public class NameAdapter  extends RecyclerView.Adapter{
                 });
             }
         });
-        
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
     }
 
     @Override

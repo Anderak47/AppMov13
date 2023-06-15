@@ -50,10 +50,10 @@ public class CrearPaisajeActivity extends AppCompatActivity implements LocationL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_crear_pokemon);
+        setContentView(R.layout.activity_crear_paisaje);
 
         EditText ediname = findViewById(R.id.ediNombre);
-        EditText ediTipo = findViewById(R.id.ediTipo);
+        //EditText ediTipo = findViewById(R.id.ediTipo);
         Button crear = findViewById(R.id.btnCrear);
         //sacar cordenadas
         // Solicita los permisos de ubicación si no están concedidos
@@ -93,7 +93,7 @@ public class CrearPaisajeActivity extends AppCompatActivity implements LocationL
                 PaisajeService service = retrofit.create(PaisajeService.class);
 
                 paisaje.nombre = String.valueOf(ediname.getText());
-                paisaje.tipo = String.valueOf(ediTipo.getText());
+                //paisaje.tipo = String.valueOf(ediTipo.getText());
                 String url = "https://demo-upn.bit2bittest.com/" + urlImage;
                 paisaje.foto = url;
                 paisaje.setLatitud(latitude);
@@ -125,7 +125,7 @@ public class CrearPaisajeActivity extends AppCompatActivity implements LocationL
                 Toast.makeText(getApplicationContext(), "Pokemon Guardado", Toast.LENGTH_SHORT).show();
                 //limpiar datos
                 ediname.setText("");
-                ediTipo.setText("");
+                //ediTipo.setText("");
             }
         });
         Button tomarFoto = findViewById(R.id.btnCamara);
@@ -137,18 +137,6 @@ public class CrearPaisajeActivity extends AppCompatActivity implements LocationL
             }
         });
 
-        Button fotoGaleria = findViewById(R.id.btnGaleria);
-        fotoGaleria.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    openGallery();
-                } else {
-                    String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
-                    requestPermissions(permissions, 2000);
-                }
-            }
-        });
     }
 
     private void handleOpenCamera() {
@@ -289,10 +277,10 @@ public class CrearPaisajeActivity extends AppCompatActivity implements LocationL
         //mandar cordenadas actuales
         Log.i("MAIN_APP: Location AND", "Latitude: " + latitude);
         Log.i("MAIN_APP: Location AND", "Longitude: " + longitude);
-        TextView latitud = findViewById(R.id.textLatitud);
-        TextView longitud = findViewById(R.id.textLongitud);
-        latitud.setText(String.valueOf(latitude));
-        longitud.setText(String.valueOf(longitude));
+        //TextView latitud = findViewById(R.id.textLatitud);
+        //TextView longitud = findViewById(R.id.textLongitud);
+        //latitud.setText(String.valueOf(latitude));
+        //longitud.setText(String.valueOf(longitude));
         //cerrar servicio
         mLocationManager.removeUpdates(this);
 

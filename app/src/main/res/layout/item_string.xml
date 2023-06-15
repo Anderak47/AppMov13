@@ -21,15 +21,6 @@
             android:inputType="text"
             android:text="Name" />
 
-        <EditText
-            android:id="@+id/editTipo"
-            android:layout_width="177dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ems="10"
-            android:inputType="text"
-            android:text="Name" />
-
     </LinearLayout>
 
     <LinearLayout

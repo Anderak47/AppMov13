@@ -17,29 +17,6 @@
             android:hint="Descripción"
             android:textSize="16sp"/>
 
-        <EditText
-            android:id="@+id/ediTipo"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:hint="Descripción"
-            android:textSize="16sp"
-            android:padding="8dp"/>
-
-        <EditText
-            android:id="@+id/textLatitud"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:hint="Latitud"
-            android:textSize="16sp"
-            android:padding="8dp"/>
-
-        <EditText
-            android:id="@+id/textLongitud"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:hint="longitud"
-            android:textSize="16sp"
-            android:padding="8dp"/>
 
         <LinearLayout
             android:layout_width="318dp"
@@ -58,13 +35,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Camara" />
-
-            <Button
-                android:id="@+id/btnGaleria"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Galeria" />
-
 
         </LinearLayout>
     </LinearLayout>
